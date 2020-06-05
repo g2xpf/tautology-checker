@@ -37,6 +37,7 @@ impl VarEnv {
             Expr::Sole(e) => {
                 bh.insert(e.0);
             }
+            Expr::Const(_) => {}
             Expr::UnOp(UnOpExpr { expr, .. }) => bh.extend(Self::vars(expr)),
             Expr::BinOp(BinOpExpr { lhs, rhs, .. }) => {
                 bh.extend(Self::vars(lhs));
@@ -122,6 +123,7 @@ pub fn eval(parser: &Parser) -> EvalResult {
 fn evaluate(e: &Expr, env: &VarEnvMap<'_>) -> bool {
     match e {
         Expr::Sole(e) => env.get(e.0),
+        Expr::Const(e) => e.0,
         Expr::BinOp(BinOpExpr { lhs, op, rhs }) => {
             let l = evaluate(lhs, env);
             let r = evaluate(rhs, env);

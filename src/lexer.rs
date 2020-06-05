@@ -5,6 +5,8 @@ use std::fmt;
 #[derive(Debug, PartialEq, Clone, Copy)]
 pub enum Token {
     Var(char),
+    Bottom,
+    Top,
     Not,
     LParen,
     RParen,
@@ -43,6 +45,8 @@ impl Lexer {
                 '(' => LParen,
                 ')' => RParen,
                 '→' => Arrow,
+                '⊥' => Bottom,
+                'T' => Top,
                 'a'..='z' => Var(c),
                 _ => return Err(InvalidCharacterError(c)),
             };

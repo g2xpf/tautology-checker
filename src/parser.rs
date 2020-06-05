@@ -80,6 +80,7 @@ impl Error for ParseError {}
 #[derive(Debug)]
 pub enum Expr {
     Sole(SoleExpr),
+    Const(ConstExpr),
     UnOp(UnOpExpr),
     BinOp(BinOpExpr),
 }
@@ -88,6 +89,7 @@ impl Parse for Expr {
     fn parse(lexer: &mut Lexer) -> Result<Self> {
         use Expr::*;
         match lexer.lookahead1().ok_or(ParseError::NoTokensLeft)? {
+            Token::Bottom | Token::Top => lexer.parse().map(Const),
             Token::Var(_) => lexer.parse().map(Sole),
             Token::Not => lexer.parse().map(UnOp),
             Token::LParen => {
@@ -115,6 +117,23 @@ impl Parse for SoleExpr {
             }
         } else {
             Err(ParseError::NoTokensLeft)
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct ConstExpr(pub bool);
+
+impl Parse for ConstExpr {
+    fn parse(lexer: &mut Lexer) -> Result<Self> {
+        use Token::*;
+        match lexer.peek() {
+            Some(token) => match token {
+                Bottom => Ok(ConstExpr(false)),
+                Top => Ok(ConstExpr(true)),
+                _ => Err(ParseError::UnexpectedToken(token)),
+            },
+            None => Err(ParseError::NoTokensLeft),
         }
     }
 }
