@@ -195,6 +195,7 @@ pub enum BinOp {
     And,
     Or,
     Imp,
+    Equiv,
 }
 
 impl Parse for BinOp {
@@ -204,6 +205,7 @@ impl Parse for BinOp {
             And => Ok(BinOp::And),
             Or => Ok(BinOp::Or),
             Arrow => Ok(BinOp::Imp),
+            LRArrow => Ok(BinOp::Equiv),
             e => Err(ParseError::UnexpectedToken(e)),
         }
     }

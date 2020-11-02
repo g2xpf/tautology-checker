@@ -11,6 +11,7 @@ pub enum Token {
     LParen,
     RParen,
     Arrow,
+    LRArrow,
     And,
     Or,
 }
@@ -47,6 +48,7 @@ impl Lexer {
                 '→' => Arrow,
                 '⊥' => Bottom,
                 'T' => Top,
+                '↔' => LRArrow,
                 'a'..='z' => Var(c),
                 _ => return Err(InvalidCharacterError(c)),
             };

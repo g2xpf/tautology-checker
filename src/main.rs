@@ -30,4 +30,7 @@ fn main() {
 
     let parser = generate("(((p → q) → p) → p)").unwrap();
     println!("{:?}", evaluator::eval(&parser));
+
+    let parser = generate("(((p ∨ q) ∧ (r ∨ s)) ↔ ((p ∧ r) ∨ (q ∧ s)))").unwrap();
+    println!("{:?}", evaluator::eval(&parser));
 }

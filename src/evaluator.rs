@@ -131,6 +131,7 @@ fn evaluate(e: &Expr, env: &VarEnvMap<'_>) -> bool {
                 BinOp::And => l && r,
                 BinOp::Or => l || r,
                 BinOp::Imp => imp(l, r),
+                BinOp::Equiv => l == r,
             }
         }
         Expr::UnOp(UnOpExpr { expr, .. }) => !evaluate(expr, env),
